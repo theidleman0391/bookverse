@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookVerse - Lectura sin límites</title>
+    <meta name="description" content="Miles de libros digitales académicos, técnicos y literarios por solo $10 MXN." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: '#fdf2f8',
+                100: '#fce7f3',
+                200: '#fbcfe8',
+                300: '#f9a8d4',
+                400: '#f472b6',
+                500: '#ec4899', // Pink primary
+                600: '#db2777',
+                700: '#be185d',
+                800: '#9d174d',
+                900: '#831843',
+              },
+              accent: {
+                500: '#8b5cf6', // Violet accent
+                600: '#7c3aed',
+              },
+              joy: {
+                100: '#ffedd5', // Orange/Amber tints for background
+                200: '#fed7aa',
+              }
+            },
+            animation: {
+              'float': 'float 6s ease-in-out infinite',
+              'gradient-xy': 'gradient-xy 6s ease infinite',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              'gradient-xy': {
+                '0%, 100%': {
+                    'background-size': '200% 200%',
+                    'background-position': 'left center'
+                },
+                '50%': {
+                    'background-size': '200% 200%',
+                    'background-position': 'right center'
+                },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      html { scroll-behavior: smooth; }
+      body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+      /* --- ROBUST CENTERED 3D BOOK CSS --- */
+      
+      .book-stage {
+        width: 200px;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 800px; /* Slightly reduced perspective for better iso view */
+      }
+
+      .book-wrapper {
+        position: relative;
+        width: 200px;
+        height: 300px;
+        transform-style: preserve-3d;
+        transition: transform 0.1s linear;
+      }
+
+      /* Common styles for faces */
+      .face {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      /* FRONT: 200x300, translated forward by half depth (25px) */
+      .book-cover {
+        width: 200px;
+        height: 300px;
+        border-radius: 3px 4px 4px 3px;
+        z-index: 10;
+        transform: translateZ(25px);
+        box-shadow: inset 4px 0 10px rgba(0,0,0,0.1); /* Spine fold shadow */
+      }
+
+      /* BACK: 200x300, translated backward by half depth (-25px) and rotated */
+      .book-back {
+        width: 200px;
+        height: 300px;
+        border-radius: 3px 4px 4px 3px;
+        transform: rotateY(180deg) translateZ(25px);
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+
+      /* SPINE: 50x300. Positioned in center X (left: 75px), rotated -90deg Y, translated -100px Z relative to itself to hit left edge */
+      .book-spine {
+        width: 50px;
+        height: 300px;
+        left: 75px; /* (200 - 50) / 2 */
+        transform: rotateY(-90deg) translateZ(100px);
+        background: inherit; /* Should inherit or match cover */
+        border-radius: 2px;
+      }
+
+      /* PAGES (Right Side) */
+      .book-pages {
+        width: 48px; /* Slightly inset from 50px depth */
+        height: 294px; /* 300 - 6px (inset 3px top/bottom) */
+        top: 3px;
+        left: 76px; /* (200 - 48) / 2 */
+        transform: rotateY(90deg) translateZ(96px); /* 96px matches the visual inset */
+        background: #fdfbf7;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.05); /* Subtle shadow, no lines */
+      }
+
+      /* PAGES (Top & Bottom) */
+      .book-pages-top, .book-pages-bottom {
+        position: absolute;
+        width: 196px; /* 200 - 4px (spine gap/inset) */
+        height: 48px; /* Depth */
+        left: 2px; /* Centered */
+        top: 126px; /* (300 - 48) / 2 */
+        background: #fdfbf7;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+      }
+
+      .book-pages-top {
+        transform: rotateX(90deg) translateZ(147px);
+      }
+      
+      .book-pages-bottom {
+        transform: rotateX(-90deg) translateZ(147px);
+      }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.41.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-white text-slate-900">
+    <div id="root"></div>
+  </body>
+</html>
